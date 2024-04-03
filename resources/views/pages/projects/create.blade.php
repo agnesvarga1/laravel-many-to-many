@@ -2,6 +2,7 @@
 
 @section('content')
 <h2 class="text-center">New project</h2>
+
 <div class="container">
     <form action="{{route("dashboard.projects.store")}}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -17,7 +18,7 @@
                <div class="alert alert-danger">{{ $message }}</div>
                @enderror
                 <label for="type_id">Project Type</label>
-                <select id="type_id" name="type_id" class="form-select @error("type_id") is-invalid  @enderror" aria-label="Default select example">
+                <select id="type_id" name="type_id" class="form-select @error("type_id") is-invalid  @enderror mb-2" aria-label="Default select example">
                     <option selected>Open this select menu</option>
 
                     @foreach ($types as $item )
@@ -25,9 +26,24 @@
                     @endforeach
 
                 </select>
-                @error('type_id')
-                <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
+                <div>
+                    <p>Used Technologies</p>
+
+                    @foreach ($techs as $item )
+                    <div class="form-check">
+
+                        <input class="form-check-input" type="checkbox" value="{{$item->id}}" id="flexCheckDefault" name="techs[]">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          {{$item->name}}
+                        </label>
+
+
+                      </div>
+                      @endforeach
+
+                </div>
+
+
                <div class="mb-3">
                 <label for="formFile" class="form-label">Add an image</label>
                 <input value="{{old('image')}}" class="form-control  @error("image") is-invalid  @enderror" type="file" id="formFile" name="image">

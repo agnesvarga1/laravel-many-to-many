@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Type;
+use App\Models\Technology;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +27,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('pages.projects.create',compact('types'));
+        $techs= Technology::All();
+        return view('pages.projects.create',compact('types','techs'));
     }
 
     /**
@@ -36,7 +38,7 @@ class ProjectController extends Controller
     {
        // dd($request);
        $validData = $request->validated();
-
+      // dd($validData);
        $slug = Project::generateSlug($request->project_name);
 
        $validData['slug'] = $slug;
@@ -48,6 +50,9 @@ class ProjectController extends Controller
       }
        // dd($validData);
      $newProject = Project::create($validData);
+     if($request->has('techs')){
+        $newProject->technologies()->attach($request->techs);
+     }
 
       return redirect()->route('dashboard.projects.index');
     }
