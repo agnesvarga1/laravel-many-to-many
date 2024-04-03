@@ -38,6 +38,28 @@
                @error('type_id')
                <div class="alert alert-danger">{{ $message }}</div>
                @enderror
+               <div class="my-2">
+                <p>Used Technologies</p>
+
+                @foreach ($techs as $item )
+                <div class="form-check">
+
+                    <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="{{$item->id}}"
+                    id="flexCheckDefault"
+                    name="techs[]"
+                    {{ $project->technologies->contains( $item->id ) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="flexCheckDefault">
+                      {{$item->name}}
+                    </label>
+
+
+                  </div>
+                  @endforeach
+
+            </div>
                <div class="mb-3">
                 <label for="formFile" class="form-label">Add an image</label>
                 <input value="{{old('image')}}" class="form-control  @error("image") is-invalid  @enderror" type="file" id="formFile" name="image">

@@ -62,7 +62,11 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('pages.projects.show',compact('project'));
+
+       $techs = $project->technologies()->get();
+
+
+        return view('pages.projects.show',compact('project','techs'));
     }
 
     /**
@@ -72,7 +76,8 @@ class ProjectController extends Controller
     {
 
         $types = Type::all();
-     return view('pages.projects.edit',compact('project','types'));
+        $techs = Technology::All();
+     return view('pages.projects.edit',compact('project','types','techs'));
     }
 
     /**
@@ -80,6 +85,7 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
+
         $validData = $request->validated();
 
         $slug = Project::generateSlug($request->project_name);
@@ -96,9 +102,14 @@ class ProjectController extends Controller
 
         }
 
+       // dd($validData);
 
+       $project->update($validData);
+      // dd($project ,$request->techs);
+        if( $request->has('techs') ){
+            $project->technologies()->sync( $request->techs );
+        }
 
-        $project = $project->update($validData);
         return redirect()->route('dashboard.projects.index');
     }
 
@@ -107,6 +118,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        $project->technologies()->sync([]);
       if($project->image){
         Storage::delete($project->image);
       }
