@@ -5,12 +5,18 @@
 
     <h1 class="text-center">{{$project->project_name}}</h1>
     <h3>{{$project->type ? $project->type->name . ' project ': 'Unknown project type'}}</h3>
+{{-- {{dd($techs->count())}} --}}
 
-  <span>Technologies:</span>
 
-  @foreach ($techs as $item )
-     <span> {{$item->name}}, </span>
-  @endforeach
+@if ($techs->count() !== 0)
+<span> <strong> Technologies:</strong></span>
+@foreach ($techs as $item )
+
+<span> {{$item->name}}, </span>
+@endforeach
+
+@endif
+
 
 
 
