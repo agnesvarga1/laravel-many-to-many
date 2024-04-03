@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('technology_project', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('project_id')->nullable();
-
+            $table->foreign('project_id')->references('id')->on('projects')->cascadeOnDelete();
+            $table->unsignedBigInteger('technology_id')->nullable();
+            $table->foreign('technology_id')->references('id')->on('technologies')->cascadeOnDelete();
             $table->timestamps();
         });
     }
